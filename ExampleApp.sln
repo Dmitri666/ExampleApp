@@ -3,7 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApp", "ExampleApp\ExampleApp.csproj", "{80865241-F9E5-409D-81A2-8BD7E235660D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.DB", "Example.DB\Example.DB.csproj", "{1F227966-ED31-4B6D-9916-92091292A8AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.HttpClient", "Example.HttpClient\Example.HttpClient.csproj", "{E29F135E-BB49-4E9E-AD29-F4EB73E9D193}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Model", "Example.Model\Example.Model.csproj", "{6E05BB2D-B952-45C3-85B2-16D256FC2B59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Model.Contract", "Example.Model.Contract\Example.Model.Contract.csproj", "{C3E067DC-180A-4559-9B79-E4C9A0477B0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.WebApi", "Example.WebApi\Example.WebApi.csproj", "{CEEB7D9B-7720-41EA-A555-78985E9E0182}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{A2F96183-46DC-4D0E-9D35-F7C467F507AF}"
+	ProjectSection(SolutionItems) = preProject
+		libs\QData.Common.dll = libs\QData.Common.dll
+		libs\Qdata.Json.Contract.dll = libs\Qdata.Json.Contract.dll
+		libs\QData.LinqConverter.dll = libs\QData.LinqConverter.dll
+		libs\QData.Model.dll = libs\QData.Model.dll
+		libs\QData.SqlProvider.dll = libs\QData.SqlProvider.dll
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +28,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{80865241-F9E5-409D-81A2-8BD7E235660D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80865241-F9E5-409D-81A2-8BD7E235660D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80865241-F9E5-409D-81A2-8BD7E235660D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80865241-F9E5-409D-81A2-8BD7E235660D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F227966-ED31-4B6D-9916-92091292A8AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F227966-ED31-4B6D-9916-92091292A8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F227966-ED31-4B6D-9916-92091292A8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F227966-ED31-4B6D-9916-92091292A8AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E29F135E-BB49-4E9E-AD29-F4EB73E9D193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E29F135E-BB49-4E9E-AD29-F4EB73E9D193}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E29F135E-BB49-4E9E-AD29-F4EB73E9D193}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E29F135E-BB49-4E9E-AD29-F4EB73E9D193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E05BB2D-B952-45C3-85B2-16D256FC2B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E05BB2D-B952-45C3-85B2-16D256FC2B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E05BB2D-B952-45C3-85B2-16D256FC2B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E05BB2D-B952-45C3-85B2-16D256FC2B59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3E067DC-180A-4559-9B79-E4C9A0477B0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E067DC-180A-4559-9B79-E4C9A0477B0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E067DC-180A-4559-9B79-E4C9A0477B0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E067DC-180A-4559-9B79-E4C9A0477B0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEEB7D9B-7720-41EA-A555-78985E9E0182}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEEB7D9B-7720-41EA-A555-78985E9E0182}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEEB7D9B-7720-41EA-A555-78985E9E0182}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEEB7D9B-7720-41EA-A555-78985E9E0182}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
