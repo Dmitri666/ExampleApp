@@ -1,4 +1,5 @@
 
+using AdminModul.Contracts;
 using QData.Common;
 
 namespace Example.Data.Contract.Model
@@ -25,6 +26,6 @@ namespace Example.Data.Contract.Model
 
         public IEnumerable<ContactDto> Contacts { get; set; }
 
-        
+        public User CreatedBy { get; set; }
     }
 }

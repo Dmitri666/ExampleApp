@@ -1,3 +1,4 @@
+using AdminModul.Contracts;
 using QData.Common;
 
 namespace Example.Data.Contract.Model
@@ -23,5 +24,7 @@ namespace Example.Data.Contract.Model
         public string Ort { get; set; }
 
         public CustomerDto Customer { get; set; }
+
+        public User CreatedBy { get; set; }
     }
 }

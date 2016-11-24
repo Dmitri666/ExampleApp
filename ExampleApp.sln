@@ -15,6 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.WebApi", "Example.W
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{A2F96183-46DC-4D0E-9D35-F7C467F507AF}"
 	ProjectSection(SolutionItems) = preProject
+		libs\AdminModul.Contracts.dll = libs\AdminModul.Contracts.dll
 		libs\QData.Common.dll = libs\QData.Common.dll
 		libs\Qdata.Json.Contract.dll = libs\Qdata.Json.Contract.dll
 		libs\QData.LinqConverter.dll = libs\QData.LinqConverter.dll

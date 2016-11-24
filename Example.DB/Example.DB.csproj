@@ -57,10 +57,16 @@
     <Compile Include="Migrations\201611220820445_User.Designer.cs">
       <DependentUpon>201611220820445_User.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611232215166_UserRole.cs" />
+    <Compile Include="Migrations\201611232215166_UserRole.Designer.cs">
+      <DependentUpon>201611232215166_UserRole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Customer.cs" />
+    <Compile Include="Rolle.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -78,6 +84,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611220820445_User.resx">
       <DependentUpon>201611220820445_User.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611232215166_UserRole.resx">
+      <DependentUpon>201611232215166_UserRole.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdminModul.Contracts">
+      <HintPath>..\libs\AdminModul.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="QData.Common">
       <HintPath>..\libs\QData.Common.dll</HintPath>
     </Reference>

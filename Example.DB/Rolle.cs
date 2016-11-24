@@ -7,25 +7,16 @@ using System.Threading.Tasks;
 
 namespace Example.DB
 {
-    [Table("User")]
-    public class User
+    [Table("Rolle")]
+    public class Rolle
     {
-        public User()
+        public Rolle()
         {
-            this.Customers = new HashSet<Customer>();
-            this.Contacts = new HashSet<Contact>();
             this.UserRoles = new HashSet<UserRole>();
         }
-
         public int Id { get; set; }
 
         public string Name { get; set; }
-
-        string Password { get; set; }
-
-        public virtual ICollection<Customer> Customers { get; set; }
-
-        public virtual ICollection<Contact> Contacts { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
     }
