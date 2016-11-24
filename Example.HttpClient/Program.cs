@@ -46,12 +46,104 @@ namespace Example.HttpClient
         {
             for (int i = 0; i < 1; i++)
             {
-
-                StaticQueryTest();
-                StaticQueryTest1();
+                JoinQueryTest();
+                //WhereQueryTest();
+                //StaticQueryTest();
+                //StaticQueryTest1();
              
             }
             Console.ReadLine();
+        }
+
+        private static void JoinQueryTest()
+        {
+            Console.WriteLine("JoinQueryTest");
+            var client = new WebApiClient();
+            var list = new List<CustomerContactDto>().AsQueryable();
+            var id = new ConstantPlaceHolder<long>() { Value = 1 };
+            var desc = new ConstantPlaceHolder<string>() { Value = "s" };
+
+            var query =
+                list
+                    .Where( x => x.FirstName.Contains("a") && x.Firma.Contains("x"))
+                    .Expression;
+            var c = new ExpressionConverter();
+            var root = c.Convert(query);
+
+
+            var contactDtos = client.GetCustomerContact<CustomerContactDto>(new QDescriptor() { Root = root });
+            if (contactDtos == null)
+            {
+                return;
+            }
+            foreach (var contact in contactDtos)
+            {
+                Console.WriteLine("Firma={0} FirstName={1}", contact.Firma, contact.FirstName);
+
+
+            }
+        }
+
+        private static void JoinQueryTest1()
+        {
+            Console.WriteLine("JoinQueryTest");
+            var client = new WebApiClient();
+            var list = new List<ContactDto>().AsQueryable();
+            var id = new ConstantPlaceHolder<long>() { Value = 1 };
+            var desc = new ConstantPlaceHolder<string>() { Value = "s" };
+
+            var query =
+                list
+                    .Where(
+                        x =>
+                        x.Id > id.Value && x.EdvNr > 0 || x.Customer.EdvNr > 0)
+                    .Expression;
+            var c = new ExpressionConverter();
+            var root = c.Convert(query);
+
+
+            var contactDtos = client.GetContacts<ContactDto>(new QDescriptor() { Root = root });
+            if (contactDtos == null)
+            {
+                return;
+            }
+            foreach (var contact in contactDtos)
+            {
+                Console.WriteLine("id={0} FirstName={1}", contact.Id, contact.FirstName);
+
+
+            }
+        }
+
+        private static void WhereQueryTest()
+        {
+            Console.WriteLine("WhereQueryTest");
+            var client = new WebApiClient();
+            var list = new List<CustomerDto>().AsQueryable();
+            var id = new ConstantPlaceHolder<long>() { Value = 1 };
+            var desc = new ConstantPlaceHolder<string>() { Value = "s" };
+
+            var query =
+                list
+                    .Where(
+                        x =>
+                        x.Id > id.Value && x.Firma11.Contains(desc.Value) || x.Firma21.Contains("h") )
+                    .Expression;
+            var c = new ExpressionConverter();
+            var root = c.Convert(query);
+
+
+            var customers = client.GetCustomers<CustomerDto>(new QDescriptor() { Root = root });
+            if (customers == null)
+            {
+                return;
+            }
+            foreach (var customer in customers)
+            {
+                Console.WriteLine("id={0} firma1={1}", customer.Id, customer.Firma11);
+
+
+            }
         }
 
         private static void StaticQueryTest()
@@ -74,7 +166,7 @@ namespace Example.HttpClient
             var root = c.Convert(query);
 
             
-            var customers = client.GetTest<Projection>(new QDescriptor() { Root = root } );
+            var customers = client.GetCustomers<Projection>(new QDescriptor() { Root = root } );
             if (customers == null)
             {
                 return;
@@ -105,7 +197,7 @@ namespace Example.HttpClient
             var root = c.Convert(query);
 
 
-            var customers = client.GetTest<Projection1>(new QDescriptor() { Root = root });
+            var customers = client.GetCustomers<Projection1>(new QDescriptor() { Root = root });
             if (customers == null)
             {
                 return;

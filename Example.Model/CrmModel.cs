@@ -7,53 +7,23 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Runtime.CompilerServices;
-using Example.Data.Contract.Model;
-using Qdata.Json.Contract;
-using QData.Common;
-using QData.Model;
-
-
 namespace Example.Repo
 {
-    using System.Data.Entity;
-    using System.Linq;
-
     using AutoMapper;
+
+    using Example.Data.Contract.Model;
     using Example.DB;
 
     /// <summary>
     ///     The project repository.
     /// </summary>
-    public class CrmModel
+    public class CrmModel : BaseModel
 
     {
         private static CrmModel instance;
 
-        private MapperConfiguration Mapping { get; set; }
-
         private CrmModel()
         {
-        }
-
-        protected DbContext Context => new DB.CrmDataModel();
-
-        public object Find<TM>(QDescriptor param)
-            where TM : IModelEntity
-        {
-            using (var ctx = new CrmDataModel())
-            {
-                
-                var typeMap =
-                this.Mapping.GetAllTypeMaps()
-                    .FirstOrDefault(x => x.DestinationType == typeof(TM));
-
-                
-                var query = ctx.Set(typeMap.SourceType).AsQueryable();
-                var repo = new Model(this.Mapping, ctx.Set<DB.User>());
-                var result = repo.Find(param,query);
-                return result;
-            }
         }
 
         public static CrmModel GetInstance()
@@ -63,24 +33,22 @@ namespace Example.Repo
                 instance = new CrmModel();
                 instance.Mapping = new MapperConfiguration(
                     cfg =>
-                    {
-                        cfg.CreateMissingTypeMaps = true;
-                        cfg.CreateMap<Customer, CustomerDto>()
-                            .ForMember(x => x.Firma11, op => op.MapFrom(src => src.Firma1))
-                            .ForMember(x => x.Firma21, opts => opts.MapFrom(src => src.Firma2));
-                        cfg.CreateMap<Contact, ContactDto>()
-                            .ForMember(x => x.Customer, opts => opts.MapFrom(src => src.Customer));
-                    });
+                        {
+                            cfg.CreateMissingTypeMaps = true;
 
+                            cfg.CreateMap<Contact, ContactDto>()
+                                .ForMember(dto => dto.Customer, op => op.MapFrom(con => con.Customer));
+
+                            cfg.CreateMap<Customer, CustomerDto>()
+                                .ForMember(dto => dto.Firma11, op => op.MapFrom(cus => cus.Firma1))
+                                .ForMember(dto => dto.Firma21, opts => opts.MapFrom(cus => cus.Firma2))
+                                .ForMember(dto => dto.Contacts, op => op.MapFrom(cus => cus.Contacts));
+
+                            
+                        });
             }
 
             return instance;
         }
-
-        
-
     }
-
-
-
 }

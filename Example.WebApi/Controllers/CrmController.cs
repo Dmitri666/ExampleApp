@@ -56,8 +56,17 @@ namespace Example.WebApi.Controllers
         [Route("contact")]
         public HttpResponseMessage PostContact([FromBody] QDescriptor param)
         {
-            var repository = (CrmModel)CrmModel.GetInstance();
+            var repository = CrmModel.GetInstance();
             var result = repository.Find<ContactDto>(param);
+            return this.Request.CreateResponse(HttpStatusCode.OK, result);
+        }
+
+        [HttpPost]
+        [Route("customerContact")]
+        public HttpResponseMessage PostCustomerContact([FromBody] QDescriptor param)
+        {
+            var repository = FlatModel.GetInstance();
+            var result = repository.Find<CustomerContactDto>(param);
             return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
         #endregion

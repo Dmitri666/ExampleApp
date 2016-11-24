@@ -39,7 +39,7 @@ namespace Example.HttpClient
 
         #region Public Methods and Operators
 
-        public IEnumerable<TModel> GetTest<TModel>(QDescriptor descriptor)
+        public IEnumerable<TModel> GetCustomers<TModel>(QDescriptor descriptor)
         {
             using (var client = new HttpClient())
             {
@@ -72,9 +72,71 @@ namespace Example.HttpClient
             return null;
         }
 
-        
+        public IEnumerable<TModel> GetContacts<TModel>(QDescriptor descriptor)
+        {
+            using (var client = new HttpClient())
+            {
+                var dateTimeConverter = new IsoDateTimeConverter();
+                // Default for IsoDateTimeConverter is yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK
+                dateTimeConverter.DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm";
 
-        
+                var settings = new JsonSerializerSettings();
+                settings.Converters = new List<JsonConverter> { dateTimeConverter };
+
+                var json = JsonConvert.SerializeObject(descriptor, settings);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                using (
+                    Task<HttpResponseMessage> response =
+                        client.PostAsync(new Uri("http://localhost/Example.WebApi/api/crm/contact"), content))
+                {
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        string jsonContent = response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+
+                        return JsonConvert.DeserializeObject<IEnumerable<TModel>>(jsonContent);
+                    }
+
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+        public IEnumerable<TModel> GetCustomerContact<TModel>(QDescriptor descriptor)
+        {
+            using (var client = new HttpClient())
+            {
+                var dateTimeConverter = new IsoDateTimeConverter();
+                // Default for IsoDateTimeConverter is yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK
+                dateTimeConverter.DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm";
+
+                var settings = new JsonSerializerSettings();
+                settings.Converters = new List<JsonConverter> { dateTimeConverter };
+
+                var json = JsonConvert.SerializeObject(descriptor, settings);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                using (
+                    Task<HttpResponseMessage> response =
+                        client.PostAsync(new Uri("http://localhost/Example.WebApi/api/crm/customerContact"), content))
+                {
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        string jsonContent = response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
+
+                        return JsonConvert.DeserializeObject<IEnumerable<TModel>>(jsonContent);
+                    }
+
+                    return null;
+                }
+            }
+
+            return null;
+        }
 
         #endregion
     }
