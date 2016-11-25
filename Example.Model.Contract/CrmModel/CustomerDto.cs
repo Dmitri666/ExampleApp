@@ -1,11 +1,10 @@
-
-using AdminModul.Contracts;
-using QData.Common;
-
-namespace Example.Data.Contract.Model
+namespace Example.Data.Contract.CrmModel
 {
-    using System;
     using System.Collections.Generic;
+
+    using AdminModul.Contracts;
+
+    using QData.Common;
 
     public class CustomerDto : IModelEntity
     {

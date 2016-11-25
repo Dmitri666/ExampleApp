@@ -1,9 +1,8 @@
-using AdminModul.Contracts;
-using QData.Common;
-
-namespace Example.Data.Contract.Model
+namespace Example.Data.Contract.CrmModel
 {
-    using System;
+    using AdminModul.Contracts;
+
+    using QData.Common;
 
     public class ContactDto : IModelEntity
     {

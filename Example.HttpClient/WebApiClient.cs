@@ -28,18 +28,9 @@ namespace Example.HttpClient
     /// </summary>
     public class WebApiClient
     {
-        #region Fields
-
-        /// <summary>
-        ///     The the uri.
-        /// </summary>
-        private readonly Uri theUri = new Uri("http://localhost/Example.WebApi/api/Project");
-
-        #endregion
-
         #region Public Methods and Operators
 
-        public IEnumerable<TModel> GetCustomers<TModel>(QDescriptor descriptor)
+        public IEnumerable<TModel> Get<TModel>(Uri accsessPoint, QDescriptor descriptor)
         {
             using (var client = new HttpClient())
             {
@@ -56,7 +47,7 @@ namespace Example.HttpClient
 
                 using (
                     Task<HttpResponseMessage> response =
-                        client.PostAsync(new Uri("http://localhost/Example.WebApi/api/crm/customer"), content))
+                        client.PostAsync(accsessPoint, content))
                 {
                     if (response.Result.IsSuccessStatusCode)
                     {
@@ -72,7 +63,7 @@ namespace Example.HttpClient
             return null;
         }
 
-        public IEnumerable<TModel> GetContacts<TModel>(QDescriptor descriptor)
+        public void Get(Uri accsessPoint, QDescriptor descriptor,Type returnType,object result)
         {
             using (var client = new HttpClient())
             {
@@ -89,54 +80,29 @@ namespace Example.HttpClient
 
                 using (
                     Task<HttpResponseMessage> response =
-                        client.PostAsync(new Uri("http://localhost/Example.WebApi/api/crm/contact"), content))
+                        client.PostAsync(accsessPoint, content))
                 {
                     if (response.Result.IsSuccessStatusCode)
                     {
                         string jsonContent = response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
 
-                        return JsonConvert.DeserializeObject<IEnumerable<TModel>>(jsonContent);
+                        var listType = typeof (IEnumerable<>);
+                        var targetType = listType.MakeGenericType(returnType);
+                        var res =  JsonConvert.DeserializeObject(jsonContent,targetType);
+                        var methodInfo = result.GetType().GetMethod("AddRange");
+                        methodInfo.Invoke(result, new object[] { res });
                     }
 
-                    return null;
+                    
                 }
             }
 
-            return null;
+            
         }
 
-        public IEnumerable<TModel> GetCustomerContact<TModel>(QDescriptor descriptor)
-        {
-            using (var client = new HttpClient())
-            {
-                var dateTimeConverter = new IsoDateTimeConverter();
-                // Default for IsoDateTimeConverter is yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK
-                dateTimeConverter.DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm";
 
-                var settings = new JsonSerializerSettings();
-                settings.Converters = new List<JsonConverter> { dateTimeConverter };
 
-                var json = JsonConvert.SerializeObject(descriptor, settings);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                using (
-                    Task<HttpResponseMessage> response =
-                        client.PostAsync(new Uri("http://localhost/Example.WebApi/api/crm/customerContact"), content))
-                {
-                    if (response.Result.IsSuccessStatusCode)
-                    {
-                        string jsonContent = response.GetAwaiter().GetResult().Content.ReadAsStringAsync().Result;
-
-                        return JsonConvert.DeserializeObject<IEnumerable<TModel>>(jsonContent);
-                    }
-
-                    return null;
-                }
-            }
-
-            return null;
-        }
 
         #endregion
     }

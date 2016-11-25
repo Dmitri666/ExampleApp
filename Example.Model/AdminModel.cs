@@ -11,40 +11,42 @@ namespace Example.Repo
 {
     using AutoMapper;
 
-    using Example.Data.Contract.CrmModel;
+    using Example.Data.Contract.AdminModel;
     using Example.DB;
 
     /// <summary>
     ///     The project repository.
     /// </summary>
-    public class CrmModel : BaseModel
+    public class AdminModel : BaseModel
 
     {
-        private static CrmModel instance;
+        private static AdminModel instance;
 
-        private CrmModel()
+        private AdminModel()
         {
         }
 
-        public static CrmModel GetInstance()
+        public static AdminModel GetInstance()
         {
             if (instance == null)
             {
-                instance = new CrmModel();
+                instance = new AdminModel();
                 instance.Mapping = new MapperConfiguration(
                     cfg =>
                         {
                             cfg.CreateMissingTypeMaps = true;
 
-                            cfg.CreateMap<Contact, ContactDto>()
-                                .ForMember(dto => dto.Customer, op => op.MapFrom(con => con.Customer));
+                            cfg.CreateMap<User, UserDto>()
+                                .ForMember(dto => dto.UserRoles, op => op.MapFrom(con => con.UserRoles));
 
-                            cfg.CreateMap<Customer, CustomerDto>()
-                                .ForMember(dto => dto.Firma11, op => op.MapFrom(cus => cus.Firma1))
-                                .ForMember(dto => dto.Firma21, opts => opts.MapFrom(cus => cus.Firma2))
-                                .ForMember(dto => dto.Contacts, op => op.MapFrom(cus => cus.Contacts));
+                            cfg.CreateMap<Rolle, RolleDto>()
+                                .ForMember(dto => dto.UserRoles, op => op.MapFrom(cus => cus.UserRoles));
 
-                            
+                            cfg.CreateMap<UserRole, UserRoleDto>()
+                                .ForMember(dto => dto.User, op => op.MapFrom(cus => cus.User))
+                                .ForMember(dto => dto.Role, op => op.MapFrom(cus => cus.Role));
+
+
                         });
             }
 

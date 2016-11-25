@@ -45,14 +45,20 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\ContactDto.cs" />
-    <Compile Include="Model\CustomerContactDto.cs" />
-    <Compile Include="Model\CustomerDto.cs" />
+    <Compile Include="AdminModel\RolleDto.cs" />
+    <Compile Include="AdminModel\UserDto.cs" />
+    <Compile Include="AdminModel\UserRoleDto.cs" />
+    <Compile Include="AuditModel\ContactDto.cs" />
+    <Compile Include="AuditModel\CustomerDto.cs" />
+    <Compile Include="AuditModel\User.cs" />
+    <Compile Include="CrmModel\ContactDto.cs" />
+    <Compile Include="CrmModel\CustomerDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

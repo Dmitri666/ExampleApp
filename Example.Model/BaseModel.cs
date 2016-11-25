@@ -10,7 +10,6 @@ namespace Example.Repo
 
     using AutoMapper;
 
-    using Example.Data.Contract.Model;
     using Example.DB;
 
     using Qdata.Json.Contract;
@@ -25,9 +24,7 @@ namespace Example.Repo
         protected BaseModel()
         {
         }
-
-        protected DbContext Context => new DB.CrmDataModel();
-
+        
         public object Find<TM>(QDescriptor param)
             where TM : IModelEntity
         {

@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-
-using Example.Data.Contract.Model;
 using Example.HttpClient.Model;
 using Qdata.Json.Contract;
 using QData.LinqConverter;
@@ -18,7 +16,8 @@ namespace Example.HttpClient
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    
+
+    using Example.Data.Contract.CrmModel;
 
     /// <summary>
     ///     The program.
@@ -30,7 +29,10 @@ namespace Example.HttpClient
         /// <summary>
         ///     The _access token.
         /// </summary>
-        private static string _accessToken;
+        private static Uri contactAccsessPoint = new Uri("http://localhost/Example.WebApi/api/crm/contact");
+        private static Uri customerAccsessPoint = new Uri("http://localhost/Example.WebApi/api/crm/customer");
+        private static Uri userAccsessPoint = new Uri("http://localhost/Example.WebApi/api/admin/user");
+        private static Uri roleAccsessPoint = new Uri("http://localhost/Example.WebApi/api/admin/role");
 
         #endregion
 
@@ -46,43 +48,16 @@ namespace Example.HttpClient
         {
             for (int i = 0; i < 1; i++)
             {
-                JoinQueryTest();
-                //WhereQueryTest();
-                //StaticQueryTest();
-                //StaticQueryTest1();
+                JoinQueryTest1();
+                WhereQueryTest();
+                StaticQueryTest();
+                AnonymeSelectorQueryTest();
              
             }
             Console.ReadLine();
         }
 
-        private static void JoinQueryTest()
-        {
-            Console.WriteLine("JoinQueryTest");
-            var client = new WebApiClient();
-            var list = new List<CustomerContactDto>().AsQueryable();
-            var id = new ConstantPlaceHolder<long>() { Value = 1 };
-            var desc = new ConstantPlaceHolder<string>() { Value = "s" };
-
-            var query =
-                list
-                    .Where( x => x.FirstName.Contains("a") && x.Firma.Contains("x"))
-                    .Expression;
-            var c = new ExpressionConverter();
-            var root = c.Convert(query);
-
-
-            var contactDtos = client.GetCustomerContact<CustomerContactDto>(new QDescriptor() { Root = root });
-            if (contactDtos == null)
-            {
-                return;
-            }
-            foreach (var contact in contactDtos)
-            {
-                Console.WriteLine("Firma={0} FirstName={1}", contact.Firma, contact.FirstName);
-
-
-            }
-        }
+        
 
         private static void JoinQueryTest1()
         {
@@ -102,7 +77,7 @@ namespace Example.HttpClient
             var root = c.Convert(query);
 
 
-            var contactDtos = client.GetContacts<ContactDto>(new QDescriptor() { Root = root });
+            var contactDtos = client.Get<ContactDto>(contactAccsessPoint,new QDescriptor() { Root = root });
             if (contactDtos == null)
             {
                 return;
@@ -133,7 +108,7 @@ namespace Example.HttpClient
             var root = c.Convert(query);
 
 
-            var customers = client.GetCustomers<CustomerDto>(new QDescriptor() { Root = root });
+            var customers = client.Get<CustomerDto>(customerAccsessPoint,new QDescriptor() { Root = root });
             if (customers == null)
             {
                 return;
@@ -166,7 +141,7 @@ namespace Example.HttpClient
             var root = c.Convert(query);
 
             
-            var customers = client.GetCustomers<Projection>(new QDescriptor() { Root = root } );
+            var customers = client.Get<Projection>(customerAccsessPoint,new QDescriptor() { Root = root } );
             if (customers == null)
             {
                 return;
@@ -179,9 +154,9 @@ namespace Example.HttpClient
             }
         }
 
-        private static void StaticQueryTest1()
+        private static void AnonymeSelectorQueryTest()
         {
-            Console.WriteLine("StaticQueryTest");
+            Console.WriteLine("AnonymeSelectorQueryTest");
             var client = new WebApiClient();
             var list = new List<CustomerDto>().AsQueryable();
             var id = new ConstantPlaceHolder<long>() { Value = 1 };
@@ -191,20 +166,21 @@ namespace Example.HttpClient
                 list
                     .Select(x => new { Id1 = x.Id, Firma4 = x.Firma11 }).Where(
                         x =>
-                        x.Id1 > id.Value && x.Firma4.Contains(desc.Value))
-                    .Expression;
+                        x.Id1 > id.Value && x.Firma4.Contains(desc.Value));
             var c = new ExpressionConverter();
-            var root = c.Convert(query);
+            var root = c.Convert(query.Expression);
 
-
-            var customers = client.GetCustomers<Projection1>(new QDescriptor() { Root = root });
+            var customers = query.ToList();
+            client.Get(customerAccsessPoint,new QDescriptor() { Root = root },query.ElementType, customers);
+            
             if (customers == null)
             {
                 return;
             }
+            
             foreach (var customer in customers)
             {
-                Console.WriteLine("id={0} firma4={1}", customer.Id, customer.Firma4);
+                Console.WriteLine("id={0} firma4={1}", customer.Id1, customer.Firma4);
 
 
             }

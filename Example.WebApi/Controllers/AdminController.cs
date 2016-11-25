@@ -18,13 +18,14 @@ namespace Example.WebApi.Controllers
     using System.Net.Http;
     using System.Web.Http;
 
+    using Example.Data.Contract.AdminModel;
     using Example.Data.Contract.CrmModel;
 
     /// <summary>
     ///     The project controller.
     /// </summary>
-    [RoutePrefix("api/crm")]
-    public class CrmController : ApiController
+    [RoutePrefix("api/admin")]
+    public class AdminController : ApiController
     {
         #region Public Methods and Operators
 
@@ -44,20 +45,20 @@ namespace Example.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("customer")]
+        [Route("user")]
         public HttpResponseMessage PostCustomer([FromBody] QDescriptor param)
         {
-            var model = CrmModel.GetInstance();
-            var result = model.Find<CustomerDto>(param);
+            var model = AdminModel.GetInstance();
+            var result = model.Find<UserDto>(param);
             return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
         [HttpPost]
-        [Route("contact")]
+        [Route("role")]
         public HttpResponseMessage PostContact([FromBody] QDescriptor param)
         {
-            var repository = CrmModel.GetInstance();
-            var result = repository.Find<ContactDto>(param);
+            var repository = AdminModel.GetInstance();
+            var result = repository.Find<RolleDto>(param);
             return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
