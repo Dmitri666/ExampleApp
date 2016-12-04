@@ -49,6 +49,7 @@ namespace Example.HttpClient
             for (int i = 0; i < 1; i++)
             {
                 JoinQueryTest1();
+                WhereQueryTest1();
                 WhereQueryTest();
                 StaticQueryTest();
                 AnonymeSelectorQueryTest();
@@ -57,8 +58,34 @@ namespace Example.HttpClient
             Console.ReadLine();
         }
 
-        
 
+        private static void WhereQueryTest1()
+        {
+            Console.WriteLine("WhereQueryTest");
+            var client = new WebApiClient();
+            var list = new List<CustomerDto>().AsQueryable();
+            
+
+            var query =
+                list
+                    .Where(x => x.Contacts.Count(c => c.Id > 1) > 2 && x.Firma11.Contains("w"))
+                    .Expression;
+            var con = new ExpressionConverter();
+            var root = con.Convert(query);
+
+
+            var customers = client.Get<CustomerDto>(customerAccsessPoint, new QDescriptor() { Root = root });
+            if (customers == null)
+            {
+                return;
+            }
+            foreach (var customer in customers)
+            {
+                Console.WriteLine("id={0} firma1={1}", customer.Id, customer.Firma11);
+
+
+            }
+        }
         private static void JoinQueryTest1()
         {
             Console.WriteLine("JoinQueryTest");
@@ -71,7 +98,7 @@ namespace Example.HttpClient
                 list
                     .Where(
                         x =>
-                        x.Id > id.Value && x.EdvNr > 0 || x.Customer.EdvNr > 0)
+                        x.Id > id.Value )
                     .Expression;
             var c = new ExpressionConverter();
             var root = c.Convert(query);
