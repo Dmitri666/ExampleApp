@@ -19,6 +19,9 @@ namespace Example.HttpClient
 
     using Example.Data.Contract.CrmModel;
 
+    using QData.Client;
+    using QData.Common;
+
     /// <summary>
     ///     The program.
     /// </summary>
@@ -62,19 +65,13 @@ namespace Example.HttpClient
         private static void WhereQueryTest1()
         {
             Console.WriteLine("WhereQueryTest");
-            var client = new WebApiClient();
-            var list = new List<CustomerDto>().AsQueryable();
+            var client = new QDataClient();
+            var set = new QSet<CustomerDto>();
+            var descroptor = set.Where(x => x.Contacts.Count(c => c.Id > 1) > 2 && x.Firma11.Contains("t")).OrderBy(x => x.Firma11).Take(1).Skip(2).Select( x=> new CustomerDto() { Id = x.Id }).ToQDescriptor();
+            //var descroptor = set.Where(x => x.Id > 0).OrderBy(x => x.Firma11).Take(3).Skip(1).Select(x => new CustomerDto() { Id = x.Id }).ToQDescriptor();
+
             
-
-            var query =
-                list
-                    .Where(x => x.Contacts.Count(c => c.Id > 1) > 2 && x.Firma11.Contains("w"))
-                    .Expression;
-            var con = new ExpressionConverter();
-            var root = con.Convert(query);
-
-
-            var customers = client.Get<CustomerDto>(customerAccsessPoint, new QDescriptor() { Root = root });
+            var customers = client.Get<CustomerDto>(customerAccsessPoint,descroptor);
             if (customers == null)
             {
                 return;
@@ -89,22 +86,19 @@ namespace Example.HttpClient
         private static void JoinQueryTest1()
         {
             Console.WriteLine("JoinQueryTest");
-            var client = new WebApiClient();
-            var list = new List<ContactDto>().AsQueryable();
+            var client = new QDataClient();
             var id = new ConstantPlaceHolder<long>() { Value = 1 };
-            var desc = new ConstantPlaceHolder<string>() { Value = "s" };
-
-            var query =
-                list
+            
+            var descriptor =
+                new QSet<ContactDto>()
                     .Where(
                         x =>
                         x.Id > id.Value )
-                    .Expression;
-            var c = new ExpressionConverter();
-            var root = c.Convert(query);
+                    .ToQDescriptor();
+            
 
 
-            var contactDtos = client.Get<ContactDto>(contactAccsessPoint,new QDescriptor() { Root = root });
+            var contactDtos = client.Get<ContactDto>(contactAccsessPoint, descriptor);
             if (contactDtos == null)
             {
                 return;
@@ -120,22 +114,18 @@ namespace Example.HttpClient
         private static void WhereQueryTest()
         {
             Console.WriteLine("WhereQueryTest");
-            var client = new WebApiClient();
-            var list = new List<CustomerDto>().AsQueryable();
+            var client = new QDataClient();
             var id = new ConstantPlaceHolder<long>() { Value = 1 };
             var desc = new ConstantPlaceHolder<string>() { Value = "s" };
 
-            var query =
-                list
+            var descriptor =
+                new QSet<CustomerDto>()
                     .Where(
                         x =>
                         x.Id > id.Value && x.Firma11.Contains(desc.Value) || x.Firma21.Contains("h") )
-                    .Expression;
-            var c = new ExpressionConverter();
-            var root = c.Convert(query);
-
-
-            var customers = client.Get<CustomerDto>(customerAccsessPoint,new QDescriptor() { Root = root });
+                    .ToQDescriptor();
+            
+            var customers = client.Get<CustomerDto>(customerAccsessPoint,descriptor);
             if (customers == null)
             {
                 return;
@@ -151,24 +141,20 @@ namespace Example.HttpClient
         private static void StaticQueryTest()
         {
             Console.WriteLine("StaticQueryTest");
-            var client = new WebApiClient();
-            var list = new List<CustomerDto>().AsQueryable();
+            var client = new QDataClient();
             var id = new ConstantPlaceHolder<long>() { Value = 1 };
             var desc = new ConstantPlaceHolder<string>() { Value = "s" };
 
-            var query =
-                list
+            var descriptor =
+                new QSet<CustomerDto>()
                     .Where(
                         x =>
                         x.Id > id.Value && x.Firma11.Contains(desc.Value)
                         && x.Contacts.Any(y => y.Id > id.Value && y.FirstName.Contains(desc.Value))
                         || x.Firma21.Contains("h") ).Select(x => new Projection() { Id = x.Id, Firma1 = x.Firma11 })
-                    .Expression;
-            var c = new ExpressionConverter();
-            var root = c.Convert(query);
-
+                    .ToQDescriptor();
             
-            var customers = client.Get<Projection>(customerAccsessPoint,new QDescriptor() { Root = root } );
+            var customers = client.Get<Projection>(customerAccsessPoint, descriptor);
             if (customers == null)
             {
                 return;
@@ -184,21 +170,19 @@ namespace Example.HttpClient
         private static void AnonymeSelectorQueryTest()
         {
             Console.WriteLine("AnonymeSelectorQueryTest");
-            var client = new WebApiClient();
-            var list = new List<CustomerDto>().AsQueryable();
+            var client = new QDataClient();
             var id = new ConstantPlaceHolder<long>() { Value = 1 };
             var desc = new ConstantPlaceHolder<string>() { Value = "s" };
 
             var query =
-                list
+                new QSet<CustomerDto>()
                     .Select(x => new { Id1 = x.Id, Firma4 = x.Firma11 }).Where(
                         x =>
                         x.Id1 > id.Value && x.Firma4.Contains(desc.Value));
-            var c = new ExpressionConverter();
-            var root = c.Convert(query.Expression);
+            
 
             var customers = query.ToList();
-            client.Get(customerAccsessPoint,new QDescriptor() { Root = root },query.ElementType, customers);
+            client.Get(customerAccsessPoint, query.ToQDescriptor(), query.ElementType, customers);
             
             if (customers == null)
             {

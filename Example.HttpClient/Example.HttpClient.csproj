@@ -41,6 +41,9 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="QData.Client">
+      <HintPath>..\..\QData\QData.Client\bin\Debug\QData.Client.dll</HintPath>
+    </Reference>
     <Reference Include="QData.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\QData\QData.LinqConverter\bin\Debug\QData.Common.dll</HintPath>
@@ -60,7 +63,6 @@
   <ItemGroup>
     <Compile Include="Model\Projection1.cs" />
     <Compile Include="Model\Projection.cs" />
-    <Compile Include="WebApiClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
