@@ -45,12 +45,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdminModel\RolleDto.cs" />
-    <Compile Include="AdminModel\UserDto.cs" />
-    <Compile Include="AdminModel\UserRoleDto.cs" />
-    <Compile Include="AuditModel\ContactDto.cs" />
-    <Compile Include="AuditModel\CustomerDto.cs" />
-    <Compile Include="AuditModel\User.cs" />
     <Compile Include="CrmModel\ContactDto.cs" />
     <Compile Include="CrmModel\CustomerDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

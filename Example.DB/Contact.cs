@@ -34,7 +34,6 @@ namespace Example.DB
         
         public virtual Customer Customer { get; set; }
 
-        public virtual User CreatedBy { get; set; }
-
+        
     }
 }

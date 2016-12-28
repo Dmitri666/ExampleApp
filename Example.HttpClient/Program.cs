@@ -32,10 +32,9 @@ namespace Example.HttpClient
         /// <summary>
         ///     The _access token.
         /// </summary>
-        private static Uri contactAccsessPoint = new Uri("http://localhost/Example.WebApi/api/crm/contact");
-        private static Uri customerAccsessPoint = new Uri("http://localhost/Example.WebApi/api/crm/customer");
-        private static Uri userAccsessPoint = new Uri("http://localhost/Example.WebApi/api/admin/user");
-        private static Uri roleAccsessPoint = new Uri("http://localhost/Example.WebApi/api/admin/role");
+        private static Uri contactAccsessPoint = new Uri("http://pc-dle-2.covis.lan/Example.WebApi/api/crm/contact");
+        private static Uri customerAccsessPoint = new Uri("http://pc-dle-2.covis.lan/Example.WebApi/api/crm/customer");
+        
 
         #endregion
 
@@ -52,10 +51,10 @@ namespace Example.HttpClient
             for (int i = 0; i < 1; i++)
             {
                 JoinQueryTest1();
-                WhereQueryTest1();
-                WhereQueryTest();
-                StaticQueryTest();
-                AnonymeSelectorQueryTest();
+                WhereQueryTest2();
+                //WhereQueryTest();
+                //StaticQueryTest();
+                //AnonymeSelectorQueryTest();
              
             }
             Console.ReadLine();
@@ -83,29 +82,45 @@ namespace Example.HttpClient
 
             }
         }
+
+        private static void WhereQueryTest2()
+        {
+            Console.WriteLine("WhereQueryTest2");
+            var client = new QDataClient();
+            var set = new QSet<ContactDto>();
+            var descroptor = set.Where(x => x.Customer.Firma11.Contains("a") && x.Id > 0).ToQDescriptor();
+            
+            var contacts = client.Get<ContactDto>(contactAccsessPoint, descroptor);
+            if (contacts == null)
+            {
+                return;
+            }
+            foreach (var contact in contacts)
+            {
+                Console.WriteLine("id={0} firma1={1}", contact.Id, contact.FirstName);
+
+
+            }
+        }
         private static void JoinQueryTest1()
         {
             Console.WriteLine("JoinQueryTest");
             var client = new QDataClient();
             var id = new ConstantPlaceHolder<long>() { Value = 1 };
             
-            var descriptor =
+            var query =
                 new QSet<ContactDto>()
                     .Where(
                         x =>
-                        x.Id > id.Value )
-                    .ToQDescriptor();
+                        x.Id > id.Value ).Select(x => new { FirstName = x.FirstName , CustomerName = x.Customer.Firma11 } );
+
+
+            var contacts = query.ToList();
+            client.Get(contactAccsessPoint, query.ToQDescriptor(),query.ElementType,contacts);
             
-
-
-            var contactDtos = client.Get<ContactDto>(contactAccsessPoint, descriptor);
-            if (contactDtos == null)
+            foreach (var contact in contacts)
             {
-                return;
-            }
-            foreach (var contact in contactDtos)
-            {
-                Console.WriteLine("id={0} FirstName={1}", contact.Id, contact.FirstName);
+                Console.WriteLine("id={0} FirstName={1}", contact.FirstName, contact.CustomerName);
 
 
             }

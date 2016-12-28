@@ -24,6 +24,6 @@ namespace Example.Data.Contract.CrmModel
 
         public CustomerDto Customer { get; set; }
 
-        public User CreatedBy { get; set; }
+        
     }
 }

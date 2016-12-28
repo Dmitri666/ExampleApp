@@ -25,6 +25,6 @@ namespace Example.Data.Contract.CrmModel
 
         public IEnumerable<ContactDto> Contacts { get; set; }
 
-        public User CreatedBy { get; set; }
+        
     }
 }
