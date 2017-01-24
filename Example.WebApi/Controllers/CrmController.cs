@@ -7,7 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Example.Repo;
 using Qdata.Json.Contract;
 
 
@@ -19,6 +18,7 @@ namespace Example.WebApi.Controllers
     using System.Web.Http;
 
     using Example.Data.Contract.CrmModel;
+    using Example.Service;
 
     /// <summary>
     ///     The project controller.
@@ -45,19 +45,19 @@ namespace Example.WebApi.Controllers
 
         [HttpPost]
         [Route("customer")]
-        public HttpResponseMessage PostCustomer([FromBody] QDescriptor param)
+        public HttpResponseMessage PostCustomer([FromBody] QDescriptor<CustomerDto> param)
         {
-            var model = CrmModel.GetInstance();
-            var result = model.Find<CustomerDto>(param);
+            var service = CrmSearchService.GetInstance();
+            var result = service.Find<CustomerDto>(param);
             return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
         [HttpPost]
         [Route("contact")]
-        public HttpResponseMessage PostContact([FromBody] QDescriptor param)
+        public HttpResponseMessage PostContact([FromBody] QDescriptor<ContactDto> param)
         {
-            var repository = CrmModel.GetInstance();
-            var result = repository.Find<ContactDto>(param);
+            var service = CrmSearchService.GetInstance();
+            var result = service.Find<ContactDto>(param);
             return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
 

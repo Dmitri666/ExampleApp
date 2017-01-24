@@ -143,9 +143,9 @@
       <Project>{c3e067dc-180a-4559-9b79-e4c9a0477b0e}</Project>
       <Name>Example.Model.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Example.Model\Example.Model.csproj">
+    <ProjectReference Include="..\Example.Model\Example.Service.csproj">
       <Project>{6e05bb2d-b952-45c3-85b2-16d256fc2b59}</Project>
-      <Name>Example.Model</Name>
+      <Name>Example.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

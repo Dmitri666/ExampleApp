@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.DB", "Example.DB\Ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.HttpClient", "Example.HttpClient\Example.HttpClient.csproj", "{E29F135E-BB49-4E9E-AD29-F4EB73E9D193}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Model", "Example.Model\Example.Model.csproj", "{6E05BB2D-B952-45C3-85B2-16D256FC2B59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Service", "Example.Model\Example.Service.csproj", "{6E05BB2D-B952-45C3-85B2-16D256FC2B59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.Model.Contract", "Example.Model.Contract\Example.Model.Contract.csproj", "{C3E067DC-180A-4559-9B79-E4C9A0477B0E}"
 EndProject

@@ -1,7 +1,5 @@
 namespace Example.Data.Contract.CrmModel
 {
-    using AdminModul.Contracts;
-
     using QData.Common;
 
     public class ContactDto : IModelEntity

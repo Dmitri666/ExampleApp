@@ -2,8 +2,6 @@ namespace Example.Data.Contract.CrmModel
 {
     using System.Collections.Generic;
 
-    using AdminModul.Contracts;
-
     using QData.Common;
 
     public class CustomerDto : IModelEntity
@@ -25,6 +23,6 @@ namespace Example.Data.Contract.CrmModel
 
         public IEnumerable<ContactDto> Contacts { get; set; }
 
-        
+        public int ContactsCount { get; set; }
     }
 }

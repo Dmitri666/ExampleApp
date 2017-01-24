@@ -11,10 +11,12 @@ namespace Example.HttpClient.Model
 {
     using System.Collections.Generic;
 
+    using QData.Common;
+
     /// <summary>
     ///     The project solution dto.
     /// </summary>
-    public class Projection1 
+    public class Projection1 : IProjection
     {
         public Projection1()
         {

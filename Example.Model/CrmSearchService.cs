@@ -7,11 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Example.Repo
+namespace Example.Service
 {
     using System.Linq;
 
     using AutoMapper;
+    using AutoMapper.QueryableExtensions;
 
     using Example.Data.Contract.CrmModel;
     using Example.DB;
@@ -19,47 +20,46 @@ namespace Example.Repo
     using Qdata.Json.Contract;
 
     using QData.Common;
-    using QData.Model;
+    using QData.SearchService;
 
     /// <summary>
     ///     The project repository.
     /// </summary>
-    public class CrmModel 
+    public class CrmSearchService 
 
     {
-        private static CrmModel instance;
+        private static CrmSearchService instance;
 
         protected MapperConfiguration Mapping { get; set; }
 
-        private CrmModel()
+        private CrmSearchService()
         {
         }
 
-        public static CrmModel GetInstance()
+        public static CrmSearchService GetInstance()
         {
             if (instance == null)
             {
-                instance = new CrmModel();
+                instance = new CrmSearchService();
                 instance.Mapping = new MapperConfiguration(
                     cfg =>
                         {
-                            cfg.CreateMissingTypeMaps = true;
-
                             cfg.CreateMap<Contact, ContactDto>()
-                                .ForMember(dto => dto.Customer, op => op.MapFrom(con => con.Customer));
+                                .ForMember(dto => dto.Customer, op => op.MapFrom(con => con.Customer)).MaxDepth(1);
 
                             cfg.CreateMap<Customer, CustomerDto>()
                                 .ForMember(dto => dto.Firma11, op => op.MapFrom(cus => cus.Firma1))
                                 .ForMember(dto => dto.Firma21, opts => opts.MapFrom(cus => cus.Firma2))
-                                .ForMember(dto => dto.Contacts, op => op.MapFrom(cus => cus.Contacts));
+                                .ForMember(dto => dto.Contacts, op => op.MapFrom(cus => cus.Contacts))
+                                .ForMember(dto => dto.ContactsCount, op => op.MapFrom(cus => cus.Contacts.Count())).MaxDepth(1);
 
                             cfg.CreateMap<ContactDto, Contact>()
-                                .ForMember(con => con.Customer, op => op.MapFrom(dto => dto.Customer));
+                                .ForMember(con => con.Customer, op => op.MapFrom(dto => dto.Customer)).MaxDepth(1);
 
                             cfg.CreateMap<CustomerDto, Customer>()
                                 .ForMember(cus => cus.Firma1, op => op.MapFrom(dto => dto.Firma11))
                                 .ForMember(cus => cus.Firma2, opts => opts.MapFrom(dto => dto.Firma21))
-                                .ForMember(cus => cus.Contacts, op => op.MapFrom(dto => dto.Contacts));
+                                .ForMember(cus => cus.Contacts, op => op.MapFrom(dto => dto.Contacts)).MaxDepth(1);
 
 
                         });
@@ -68,7 +68,7 @@ namespace Example.Repo
             return instance;
         }
 
-        public object Find<TM>(QDescriptor param)
+        public object Find<TM>(QDescriptor<TM> param)
            where TM : IModelEntity
         {
             using (var ctx = new CrmDataModel())
@@ -79,8 +79,10 @@ namespace Example.Repo
                     .FirstOrDefault(x => x.DestinationType == typeof(TM));
 
                 var query = ctx.Set(typeMap.SourceType).AsQueryable();
-                var repo = new Model<TM>(this.Mapping);
-                var result = repo.Find(param, query);
+                var v = query.ProjectTo<TM>(this.Mapping.CreateMapper().ConfigurationProvider);
+
+                
+                var result = new SearchService().Search(param, v);
                 return result;
             }
         }
@@ -91,12 +93,7 @@ namespace Example.Repo
             using (var ctx = new CrmDataModel())
             {
 
-                var typeMap =
-                this.Mapping.GetAllTypeMaps()
-                    .FirstOrDefault(x => x.SourceType == typeof(TM));
-
-                var repo = new Model<TM>(this.Mapping);
-                //repo.Update(model);
+               
             }
         }
     }
