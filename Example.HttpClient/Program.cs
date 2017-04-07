@@ -48,10 +48,11 @@ namespace Example.HttpClient
         /// </param>
         private static void Main(string[] args)
         {
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 10; i++)
             {
-                //JoinQueryTest1();
                 WhereQueryTest1();
+                //JoinQueryTest1();
+                //WhereQueryTest1();
                 //WhereQueryTest();
                 //StaticQueryTest();
                 //AnonymeSelectorQueryTest();
@@ -60,6 +61,10 @@ namespace Example.HttpClient
             Console.ReadLine();
         }
 
+        private static void WhereQueryTest3()
+        {
+           
+        }
 
         private static void WhereQueryTest1()
         {

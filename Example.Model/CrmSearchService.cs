@@ -11,6 +11,7 @@ namespace Example.Service
 {
     using System.Linq;
 
+
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
 
@@ -21,6 +22,7 @@ namespace Example.Service
 
     using QData.Common;
     using QData.SearchService;
+    using System.Collections.Generic;
 
     /// <summary>
     ///     The project repository.
@@ -71,9 +73,9 @@ namespace Example.Service
         public object Find<TM>(QDescriptor<TM> param)
            where TM : IModelEntity
         {
+            
             using (var ctx = new CrmDataModel())
             {
-
                 var typeMap =
                 this.Mapping.GetAllTypeMaps()
                     .FirstOrDefault(x => x.DestinationType == typeof(TM));
@@ -82,7 +84,9 @@ namespace Example.Service
                 var v = query.ProjectTo<TM>(this.Mapping.CreateMapper().ConfigurationProvider);
 
                 
+
                 var result = new SearchService().Search(param, v);
+                var countResult = new SearchService().Count(param, v);
                 return result;
             }
         }
@@ -92,8 +96,8 @@ namespace Example.Service
         {
             using (var ctx = new CrmDataModel())
             {
+                var v = ctx.Customers.Count(x => true);
 
-               
             }
         }
     }
