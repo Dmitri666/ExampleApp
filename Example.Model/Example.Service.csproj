@@ -50,15 +50,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\QData\QData.Model\bin\Debug\Qdata.Json.Contract.dll</HintPath>
     </Reference>
-    <Reference Include="QData.SearchService">
-      <HintPath>..\..\QData\QData.Model\bin\Debug\QData.SearchService.dll</HintPath>
+    <Reference Include="QData.Querable.DataService">
+      <HintPath>..\..\QData\QData.Model\bin\Debug\QData.Querable.DataService.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LinqToObjectTestService.cs" />
     <Compile Include="CrmSearchService.cs" />
+    <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

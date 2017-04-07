@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using QData.Querable.DataService;
+
 namespace Example.Service
 {
     using System.Linq;
@@ -21,7 +23,7 @@ namespace Example.Service
     using Qdata.Json.Contract;
 
     using QData.Common;
-    using QData.SearchService;
+    
     using System.Collections.Generic;
 
     /// <summary>
@@ -81,23 +83,38 @@ namespace Example.Service
                     .FirstOrDefault(x => x.DestinationType == typeof(TM));
 
                 var query = ctx.Set(typeMap.SourceType).AsQueryable();
-                var v = query.ProjectTo<TM>(this.Mapping.CreateMapper().ConfigurationProvider);
+                var source = query.ProjectTo<TM>(this.Mapping.CreateMapper().ConfigurationProvider);
 
                 
 
-                var result = new SearchService().Search(param, v);
-                var countResult = new SearchService().Count(param, v);
+                var result = new DataService().Search(param, source);
+               
                 return result;
             }
         }
 
-        public void Update<TM>(TM model)
+        public Page Page<TM>(QDescriptor<TM> param,int skip, int take)
            where TM : IModelEntity
         {
+
             using (var ctx = new CrmDataModel())
             {
-                var v = ctx.Customers.Count(x => true);
+                var typeMap =
+                this.Mapping.GetAllTypeMaps()
+                    .FirstOrDefault(x => x.DestinationType == typeof(TM));
 
+                var query = ctx.Set(typeMap.SourceType).AsQueryable();
+                var source = query.ProjectTo<TM>(this.Mapping.CreateMapper().ConfigurationProvider);
+
+
+                var page = new DataService().GetPage(param, source, skip, take);
+                return new Page()
+                {
+                    Total = page.Total,
+                    Data = page.Data
+                };
+                
+            
             }
         }
     }

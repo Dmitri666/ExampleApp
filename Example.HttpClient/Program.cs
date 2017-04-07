@@ -32,8 +32,8 @@ namespace Example.HttpClient
         /// <summary>
         ///     The _access token.
         /// </summary>
-        private static Uri contactAccsessPoint = new Uri("http://pc-dle-2.covis.lan/Example.WebApi/api/crm/contact");
-        private static Uri customerAccsessPoint = new Uri("http://pc-dle-2.covis.lan/Example.WebApi/api/crm/customer");
+        private static Uri contactAccsessPoint = new Uri("http://localhost/Example.WebApi/api/crm/contact");
+        private static Uri customerAccsessPoint = new Uri("http://localhost/Example.WebApi/api/crm/customer");
         
 
         #endregion
@@ -71,7 +71,10 @@ namespace Example.HttpClient
             Console.WriteLine("WhereQueryTest");
             var client = new QDataClient<CustomerDto>();
             var set = new QSet<CustomerDto>();
-            var query = set.Where(x => x.ContactsCount > 2 && x.Contacts.Any(c => c.FirstName.Contains("a")) );
+
+            
+
+            var query = set.Where(x => x.ContactsCount > 0 ).OrderBy(c => c.Id);
             
             var customers = client.Get(customerAccsessPoint,set.ConvertToQDescriptor(query));
             if (customers == null)

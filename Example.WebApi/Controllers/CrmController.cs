@@ -49,6 +49,7 @@ namespace Example.WebApi.Controllers
         {
             var service = CrmSearchService.GetInstance();
             var result = service.Find<CustomerDto>(param);
+            var result1 = service.Page<CustomerDto>(param,1,2);
             return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
