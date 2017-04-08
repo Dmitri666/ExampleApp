@@ -74,7 +74,7 @@ namespace Example.HttpClient
 
             
 
-            var query = set.Where(x => x.ContactsCount > 0 ).OrderBy(c => c.Id);
+            var query = set.Where(x => x.Contacts.Count() > 1).OrderBy(c => c.Id);
             
             var customers = client.Get(customerAccsessPoint,set.ConvertToQDescriptor(query));
             if (customers == null)

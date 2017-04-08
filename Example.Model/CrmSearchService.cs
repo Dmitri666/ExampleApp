@@ -54,8 +54,7 @@ namespace Example.Service
                             cfg.CreateMap<Customer, CustomerDto>()
                                 .ForMember(dto => dto.Firma11, op => op.MapFrom(cus => cus.Firma1))
                                 .ForMember(dto => dto.Firma21, opts => opts.MapFrom(cus => cus.Firma2))
-                                .ForMember(dto => dto.Contacts, op => op.MapFrom(cus => cus.Contacts))
-                                .ForMember(dto => dto.ContactsCount, op => op.MapFrom(cus => cus.Contacts.Count())).MaxDepth(1);
+                                .ForMember(dto => dto.Contacts, op => op.MapFrom(cus => cus.Contacts));
 
                             cfg.CreateMap<ContactDto, Contact>()
                                 .ForMember(con => con.Customer, op => op.MapFrom(dto => dto.Customer)).MaxDepth(1);
@@ -78,6 +77,7 @@ namespace Example.Service
             
             using (var ctx = new CrmDataModel())
             {
+                var t = ctx.Customers.Where(c => c.Id.ToString().Contains("1")).ToList();
                 var typeMap =
                 this.Mapping.GetAllTypeMaps()
                     .FirstOrDefault(x => x.DestinationType == typeof(TM));
