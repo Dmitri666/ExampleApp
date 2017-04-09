@@ -72,9 +72,9 @@ namespace Example.HttpClient
             var client = new QDataClient<CustomerDto>();
             var set = new QSet<CustomerDto>();
 
-            
+            var l = new List<long>() {1, 2};
 
-            var query = set.Where(x => x.Contacts.Count() > 1).OrderBy(c => c.Id);
+            var query = set.Where(x => !l.Contains(x.Id)).OrderBy(c => c.Id);
             
             var customers = client.Get(customerAccsessPoint,set.ConvertToQDescriptor(query));
             if (customers == null)

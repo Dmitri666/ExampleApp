@@ -77,7 +77,7 @@ namespace Example.Service
             
             using (var ctx = new CrmDataModel())
             {
-                var t = ctx.Customers.Where(c => c.Id.ToString().Contains("1")).ToList();
+                //var t = ctx.Customers.Where(c => c.Id.ToString().Contains("1")).ToList();
                 var typeMap =
                 this.Mapping.GetAllTypeMaps()
                     .FirstOrDefault(x => x.DestinationType == typeof(TM));
