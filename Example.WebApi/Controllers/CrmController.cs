@@ -45,7 +45,7 @@ namespace Example.WebApi.Controllers
 
         [HttpPost]
         [Route("customer")]
-        public HttpResponseMessage PostCustomer([FromBody] QDescriptor<CustomerDto> param)
+        public HttpResponseMessage PostCustomer([FromBody] QDescriptor param)
         {
             var service = CrmSearchService.GetInstance();
             var result = service.Find<CustomerDto>(param);
@@ -55,7 +55,7 @@ namespace Example.WebApi.Controllers
 
         [HttpPost]
         [Route("contact")]
-        public HttpResponseMessage PostContact([FromBody] QDescriptor<ContactDto> param)
+        public HttpResponseMessage PostContact([FromBody] QDescriptor param)
         {
             var service = CrmSearchService.GetInstance();
             var result = service.Find<ContactDto>(param);

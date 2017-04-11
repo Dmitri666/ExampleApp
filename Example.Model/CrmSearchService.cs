@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using QData.Querable.DataService;
+
 
 namespace Example.Service
 {
@@ -25,6 +25,9 @@ namespace Example.Service
     using QData.Common;
     
     using System.Collections.Generic;
+
+    using QData.ExpressionProvider;
+    using QData.Querable.Extentions;
 
     /// <summary>
     ///     The project repository.
@@ -71,7 +74,7 @@ namespace Example.Service
             return instance;
         }
 
-        public object Find<TM>(QDescriptor<TM> param)
+        public object Find<TM>(QDescriptor param)
            where TM : IModelEntity
         {
             
@@ -85,15 +88,16 @@ namespace Example.Service
                 var query = ctx.Set(typeMap.SourceType).AsQueryable();
                 var source = query.ProjectTo<TM>(this.Mapping.CreateMapper().ConfigurationProvider);
 
-                
+                var provider = new ExpressionProvider(source);
+                var expression = provider.ConvertToExpression(param);
 
-                var result = new DataService().Search(param, source);
+                var result = source.Execute(expression);
                
                 return result;
             }
         }
 
-        public Page Page<TM>(QDescriptor<TM> param,int skip, int take)
+        public Page Page<TM>(QDescriptor param,int skip, int take)
            where TM : IModelEntity
         {
 
@@ -106,8 +110,10 @@ namespace Example.Service
                 var query = ctx.Set(typeMap.SourceType).AsQueryable();
                 var source = query.ProjectTo<TM>(this.Mapping.CreateMapper().ConfigurationProvider);
 
+                var provider = new ExpressionProvider(source);
+                var expression = provider.ConvertToExpression(param);
 
-                var page = new DataService().GetPage(param, source, skip, take);
+                var page = source.GetPage(expression, skip, take);
                 return new Page()
                 {
                     Total = page.Total,

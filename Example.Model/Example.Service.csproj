@@ -46,12 +46,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\QData\QData.Model\bin\Debug\QData.Common.dll</HintPath>
     </Reference>
+    <Reference Include="QData.ExpressionProvider">
+      <HintPath>..\..\QData\QData.Model\bin\Debug\QData.ExpressionProvider.dll</HintPath>
+    </Reference>
     <Reference Include="Qdata.Json.Contract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\QData\QData.Model\bin\Debug\Qdata.Json.Contract.dll</HintPath>
     </Reference>
-    <Reference Include="QData.Querable.DataService">
-      <HintPath>..\..\QData\QData.Model\bin\Debug\QData.Querable.DataService.dll</HintPath>
+    <Reference Include="QData.Querable.Extentions">
+      <HintPath>..\..\QData\QData.Model\bin\Debug\QData.Querable.Extentions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
