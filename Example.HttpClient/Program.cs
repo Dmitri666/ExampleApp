@@ -69,14 +69,14 @@ namespace Example.HttpClient
         private static void WhereQueryTest1()
         {
             Console.WriteLine("WhereQueryTest");
-            var client = new QDataClient<CustomerDto>();
+            var client = new QDataClient();
             var set = new QSet<CustomerDto>();
 
             var l = new List<long>() {1, 2};
 
-            var query = set.Where(x => !l.Contains(x.Id)).OrderBy(c => c.Id);
+            var query = set.Select(x => new {a = x.Id,b = x.Firma11 } );//.Where(x => !l.Contains(x.Id)).OrderBy(c => c.Id);
             
-            var customers = client.Get(customerAccsessPoint,set.ConvertToQDescriptor(query));
+            var customers = client.Get<CustomerDto>(customerAccsessPoint,set.ConvertToQDescriptor(query));
             if (customers == null)
             {
                 return;
@@ -92,11 +92,11 @@ namespace Example.HttpClient
         private static void WhereQueryTest2()
         {
             Console.WriteLine("WhereQueryTest2");
-            var client = new QDataClient<ContactDto>();
+            var client = new QDataClient();
             var set = new QSet<ContactDto>();
             var query = set.Where(x => x.Customer.Firma11.Contains("a") && x.Id > 0);
             
-            var contacts = client.Get(contactAccsessPoint, set.ConvertToQDescriptor(query));
+            var contacts = client.Get< ContactDto>(contactAccsessPoint, set.ConvertToQDescriptor(query));
             if (contacts == null)
             {
                 return;
@@ -111,7 +111,7 @@ namespace Example.HttpClient
         private static void JoinQueryTest1()
         {
             Console.WriteLine("JoinQueryTest");
-            var client = new QDataClient<ContactDto>();
+            var client = new QDataClient();
             var id = new ConstantPlaceHolder<long>() { Value = 1 };
 
             var set = new QSet<ContactDto>();
@@ -137,7 +137,7 @@ namespace Example.HttpClient
         private static void WhereQueryTest()
         {
             Console.WriteLine("WhereQueryTest");
-            var client = new QDataClient<CustomerDto>();
+            var client = new QDataClient();
             var id = new ConstantPlaceHolder<long>() { Value = 1 };
             var desc = new ConstantPlaceHolder<string>() { Value = "s" };
 
@@ -147,7 +147,7 @@ namespace Example.HttpClient
                 set.Where(
                     x => x.Id > id.Value && x.Firma11.Contains(desc.Value) || x.Firma21.Contains("h"));
                     
-            var customers = client.Get(customerAccsessPoint,set.ConvertToQDescriptor(query));
+            var customers = client.Get<CustomerDto>(customerAccsessPoint,set.ConvertToQDescriptor(query));
             if (customers == null)
             {
                 return;
@@ -163,7 +163,7 @@ namespace Example.HttpClient
         private static void StaticQueryTest()
         {
             Console.WriteLine("StaticQueryTest");
-            var client = new QDataClient<CustomerDto>();
+            var client = new QDataClient();
             var id = new ConstantPlaceHolder<long>() { Value = 1 };
             var desc = new ConstantPlaceHolder<string>() { Value = "s" };
 
@@ -191,7 +191,7 @@ namespace Example.HttpClient
         private static void AnonymeSelectorQueryTest()
         {
             Console.WriteLine("AnonymeSelectorQueryTest");
-            var client = new QDataClient<CustomerDto>();
+            var client = new QDataClient();
             var id = new ConstantPlaceHolder<long>() { Value = 1 };
             var desc = new ConstantPlaceHolder<string>() { Value = "s" };
 
