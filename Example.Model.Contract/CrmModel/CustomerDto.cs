@@ -4,7 +4,7 @@ namespace Example.Data.Contract.CrmModel
 
     using QData.Common;
 
-    public class CustomerDto : IModelEntity
+    public class CustomerDto 
     {
         public CustomerDto()
         {

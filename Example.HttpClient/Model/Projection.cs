@@ -16,7 +16,7 @@ namespace Example.HttpClient.Model
     /// <summary>
     ///     The project solution dto.
     /// </summary>
-    public class Projection : IProjection
+    public class Projection 
     {
         public Projection()
         {

@@ -54,6 +54,18 @@
     <Compile Include="Migrations\201611150957062_Init.Designer.cs">
       <DependentUpon>201611150957062_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706151926563_NewScript1.cs" />
+    <Compile Include="Migrations\201706151926563_NewScript1.Designer.cs">
+      <DependentUpon>201706151926563_NewScript1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706151939300_NewScript2.cs" />
+    <Compile Include="Migrations\201706151939300_NewScript2.Designer.cs">
+      <DependentUpon>201706151939300_NewScript2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706152123404_NewScript3.cs" />
+    <Compile Include="Migrations\201706152123404_NewScript3.Designer.cs">
+      <DependentUpon>201706152123404_NewScript3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Customer.cs" />
@@ -71,6 +83,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201611150957062_Init.resx">
       <DependentUpon>201611150957062_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706151926563_NewScript1.resx">
+      <DependentUpon>201706151926563_NewScript1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706151939300_NewScript2.resx">
+      <DependentUpon>201706151939300_NewScript2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706152123404_NewScript3.resx">
+      <DependentUpon>201706152123404_NewScript3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

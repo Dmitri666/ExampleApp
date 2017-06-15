@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Data.Entity;
+using System.Linq;
 using Qdata.Json.Contract;
 
 
@@ -62,6 +65,22 @@ namespace Example.WebApi.Controllers
             return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
+        [HttpGet]
+        [Route("test")]
+        public object Test()
+        {
+            
+            var v = new List<ContactDto>().AsQueryable();
+            //var ex = v.Where(x => !x.Birfsday.HasValue || x.Birfsday.Value.ToString().Contains("a")).Expression;
+            //var a =  v.Select(x => new {a = x.Birfsday , c = new  { n = x.Customer.Street } }).AsQueryable();
+            var service = CrmSearchService.GetInstance();
+            
+            //service.test1(a);
+            service.test<ContactDto>();
+            return this.Request.CreateResponse(
+                HttpStatusCode.OK,
+                new CustomerDto() { Contacts = new List<ContactDto>() { new ContactDto() } });
+        }
         #endregion
     }
 }

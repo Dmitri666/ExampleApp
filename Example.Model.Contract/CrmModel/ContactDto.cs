@@ -1,8 +1,10 @@
+using System;
+
 namespace Example.Data.Contract.CrmModel
 {
     using QData.Common;
 
-    public class ContactDto : IModelEntity
+    public class ContactDto
     {
         public ContactDto()
         {
@@ -19,6 +21,8 @@ namespace Example.Data.Contract.CrmModel
         public string Street { get; set; }
 
         public string Ort { get; set; }
+
+        public DateTime? Birfsday { get; set; }
 
         public CustomerDto Customer { get; set; }
 

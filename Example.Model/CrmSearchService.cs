@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System;
 
 namespace Example.Service
 {
@@ -75,7 +76,7 @@ namespace Example.Service
         }
 
         public object Find<TM>(QDescriptor param)
-           where TM : IModelEntity
+        
         {
             
             using (var ctx = new CrmDataModel())
@@ -97,8 +98,42 @@ namespace Example.Service
             }
         }
 
+        public void test<TM>()
+        {
+            using (var ctx = new CrmDataModel())
+            {
+                var typeMap =
+                this.Mapping.GetAllTypeMaps()
+                    .FirstOrDefault(x => x.DestinationType == typeof(TM));
+
+                var query = ctx.Set(typeMap.SourceType).AsQueryable();
+                var source = query.ProjectTo<TM>(this.Mapping.CreateMapper().ConfigurationProvider);
+
+                var provider = new ExpressionProvider(source);
+                var expression = provider.GetFullTextSearchExpression("So");
+                var t = query.Execute(expression);
+
+
+
+            }
+        }
+
+        public void test1(IQueryable query)
+        {
+            
+
+                var provider = new ExpressionProvider(query);
+                var expression = provider.GetFullTextSearchExpression("a");
+            var t = query.Execute(expression);
+
+
+
+
+
+
+        }
         public Page Page<TM>(QDescriptor param,int skip, int take)
-           where TM : IModelEntity
+        
         {
 
             using (var ctx = new CrmDataModel())

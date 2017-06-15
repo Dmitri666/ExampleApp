@@ -34,6 +34,6 @@ namespace Example.DB
         
         public virtual Customer Customer { get; set; }
 
-        
+        public DateTime? Birfsday { get; set; }
     }
 }
