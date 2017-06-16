@@ -32,8 +32,8 @@ namespace Example.HttpClient
         /// <summary>
         ///     The _access token.
         /// </summary>
-        private static Uri contactAccsessPoint = new Uri("http://localhost/Example.WebApi/api/crm/contact");
-        private static Uri customerAccsessPoint = new Uri("http://localhost/Example.WebApi/api/crm/customer");
+        private static Uri contactAccsessPoint = new Uri("http://localhost:4200/api/crm/contact");
+        private static Uri customerAccsessPoint = new Uri("http://localhost:4200/api/crm/customer");
         
 
         #endregion
@@ -48,14 +48,14 @@ namespace Example.HttpClient
         /// </param>
         private static void Main(string[] args)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
                 WhereQueryTest1();
-                //JoinQueryTest1();
-                //WhereQueryTest1();
-                //WhereQueryTest();
-                //StaticQueryTest();
-                //AnonymeSelectorQueryTest();
+                JoinQueryTest1();
+                WhereQueryTest1();
+                WhereQueryTest();
+                StaticQueryTest();
+                AnonymeSelectorQueryTest();
              
             }
             Console.ReadLine();
@@ -70,20 +70,20 @@ namespace Example.HttpClient
         {
             Console.WriteLine("WhereQueryTest");
             var client = new QDataClient();
-            var set = new QSet<CustomerDto>();
+            var set = new QSet<ContactDto>();
 
             var l = new List<long>() {1, 2};
 
-            var query = set.Select(x => new {a = x.Id,b = x.Firma11 } );//.Where(x => !l.Contains(x.Id)).OrderBy(c => c.Id);
+            var query = set.Where(x => !l.Contains(x.Id) || x.Birfsday.ToString().Contains("w") ).OrderBy(c => c.Id);
             
-            var customers = client.Get<CustomerDto>(customerAccsessPoint,set.ConvertToQDescriptor(query));
+            var customers = client.Get<ContactDto>(contactAccsessPoint,set.ConvertToQDescriptor(query));
             if (customers == null)
             {
                 return;
             }
             foreach (var customer in customers)
             {
-                Console.WriteLine("id={0} firma1={1}", customer.Id, customer.Firma11);
+                Console.WriteLine("id={0} firma1={1}", customer.Id, customer.Birfsday);
 
 
             }
