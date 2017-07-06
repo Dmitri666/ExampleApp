@@ -39,12 +39,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\QData\QData.Common\bin\Debug\QData.Common.dll</HintPath>
     </Reference>
+    <Reference Include="Qdata.Json.Contract">
+      <HintPath>..\..\QData\QData.Model\bin\Debug\Qdata.Json.Contract.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CrmModel\ContactDto.cs" />
     <Compile Include="CrmModel\CustomerDto.cs" />
+    <Compile Include="ProjectionRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

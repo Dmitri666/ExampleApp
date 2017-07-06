@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Example.HttpClient.Model;
-using Qdata.Json.Contract;
+using Qdata.Contract;
 using QData.LinqConverter;
 
 namespace Example.HttpClient
@@ -20,7 +20,7 @@ namespace Example.HttpClient
     using Example.Data.Contract.CrmModel;
 
     using QData.Client;
-    using QData.Common;
+   
 
     /// <summary>
     ///     The program.
@@ -33,7 +33,7 @@ namespace Example.HttpClient
         ///     The _access token.
         /// </summary>
         private static Uri contactAccsessPoint = new Uri("http://localhost:4200/api/crm/contact");
-        private static Uri customerAccsessPoint = new Uri("http://localhost:4200/api/crm/customer");
+        private static Uri customerAccsessPoint = new Uri("http://localhost/Example.WebApi/api/customer/projection");
         
 
         #endregion
@@ -48,42 +48,71 @@ namespace Example.HttpClient
         /// </param>
         private static void Main(string[] args)
         {
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 10; i++)
             {
-                WhereQueryTest1();
-                JoinQueryTest1();
-                WhereQueryTest1();
-                WhereQueryTest();
-                StaticQueryTest();
-                AnonymeSelectorQueryTest();
-             
+                LambdaSelectTest1();
+                //JoinQueryTest1();
+                //WhereQueryTest1();
+                //WhereQueryTest();
+                //StaticQueryTest();
+                //AnonymeSelectorQueryTest();
+                Console.ReadLine();
             }
-            Console.ReadLine();
+            
         }
 
-        private static void WhereQueryTest3()
-        {
-           
-        }
-
-        private static void WhereQueryTest1()
+        private static void DynamicSelectTest3()
         {
             Console.WriteLine("WhereQueryTest");
             var client = new QDataClient();
-            var set = new QSet<ContactDto>();
 
-            var l = new List<long>() {1, 2};
+            var qSet = new QSet<CustomerDto>();
+            var query = qSet.Select(x => new { MyContacts = x.Contacts.Select(c => new { MyId = c.Id }) });
 
-            var query = set.Where(x => !l.Contains(x.Id) || x.Birfsday.ToString().Contains("w") ).OrderBy(c => c.Id);
-            
-            var customers = client.Get<ContactDto>(contactAccsessPoint,set.ConvertToQDescriptor(query));
-            if (customers == null)
+            var pSet = new QSet<CustomerDto>();
+            var projection = pSet.Select(x => new { id = x.Id, contacts = x.Contacts.Where(c => c.Birfsday == DateTime.Now).Select(c => new { cId = c.Id }) });
+
+            var request = new ProjectionRequest();
+            request.SearchDescriptor = qSet.ConvertToQDescriptor(query);
+            request.ProjectionDescriptor = pSet.ConvertToQDescriptor(projection);
+            var contacts = projection.ToList();
+            client.Get(customerAccsessPoint, request, projection.ElementType, contacts);
+            if (contacts == null)
             {
                 return;
             }
-            foreach (var customer in customers)
+            foreach (var customer in contacts)
             {
-                Console.WriteLine("id={0} firma1={1}", customer.Id, customer.Birfsday);
+                Console.WriteLine("id={0}", customer.id);
+
+
+            }
+        }
+
+        private static void LambdaSelectTest1()
+        {
+            Console.WriteLine("WhereQueryTest");
+            var client = new QDataClient();
+
+            var qSet = new QSet<CustomerDto>();
+            var query = qSet.Where(x => x.Id > 0 );
+
+            var pSet = new QSet<CustomerDto>();
+            var projection = pSet.Select(x => new { id = x.Id , contacts = x.Contacts.Where(c => c.Id > 0).Select( c => new { cId = c.Id } )  });
+            var v = new EnumResolver();
+            
+            var request = new ProjectionRequest();
+            request.SearchDescriptor = qSet.ConvertToQDescriptor(query);
+            request.ProjectionDescriptor = pSet.ConvertToQDescriptor(projection);
+            var contacts = projection.ToList();
+            client.Get(customerAccsessPoint, request, projection.ElementType, contacts);
+            if (contacts == null)
+            {
+                return;
+            }
+            foreach (var customer in contacts)
+            {
+                Console.WriteLine("id={0}" , customer.id);
 
 
             }

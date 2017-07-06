@@ -42,13 +42,8 @@
     <Reference Include="QData.Client">
       <HintPath>..\..\QData\QData.Client\bin\Debug\QData.Client.dll</HintPath>
     </Reference>
-    <Reference Include="QData.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\QData\QData.LinqConverter\bin\Debug\QData.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Qdata.Json.Contract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\QData\QData.LinqConverter\bin\Debug\Qdata.Json.Contract.dll</HintPath>
+    <Reference Include="Qdata.Contract">
+      <HintPath>..\..\QData\Qdata.Contract\bin\Debug\Qdata.Contract.dll</HintPath>
     </Reference>
     <Reference Include="QData.LinqConverter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
