@@ -2,7 +2,7 @@ namespace Example.Data.Contract.CrmModel
 {
     using System.Collections.Generic;
 
-    using QData.Common;
+    
 
     public class CustomerDto 
     {

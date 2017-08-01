@@ -17,7 +17,7 @@ using AutoMapper.QueryableExtensions;
 using Example.Data.Contract;
 using Example.DB;
 using Newtonsoft.Json;
-using Qdata.Json.Contract;
+using Qdata.Contract;
 using QData.ExpressionProvider;
 
 
@@ -68,40 +68,62 @@ namespace Example.WebApi.Controllers
             return customers.Select(x => new CustomerDto() { Id = x.Id, EdvNr = x.EdvNr,
                 Contacts = x.Contacts.Select(c => new ContactDto() { Id = c.Id , EdvNr = c.EdvNr }) });
         }
+
+        public IQueryable<ContactDto> GetContactQuery()
+        {
+            var contacts = new CrmDataModel().Contacts.AsQueryable();
+            return contacts.Select(x => new ContactDto()
+            {
+                Id = x.Id,
+                EdvNr = x.EdvNr,
+                Customer = new CustomerDto() { Id = x.Customer.Id, EdvNr = x.Customer.EdvNr, Firma11 = x.Customer.Firma1 }
+            });
+        }
+
         protected MapperConfiguration Mapping { get; set; }
         #region Public Methods and Operators
 
+        [HttpPost]
+        [Route("contacts")]
+        public HttpResponseMessage GetContacts([FromBody] QNode descriptor)
+        {
+            var query = this.GetContactQuery();
+            var expression = new QNodeDeserializer(query).Deserialize(descriptor);
+            var searchResult = query.Provider.CreateQuery<ContactDto>(expression);
 
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, searchResult);
+        }
 
         [HttpPost]
-        public HttpResponseMessage Get([FromBody] QDescriptor descriptor)
+        public HttpResponseMessage Get([FromBody] QNode descriptor)
         {
             var query = this.GetBaseQuery();
-            var expression = new ExpressionProvider(query).ConvertToExpression(descriptor);
+            var expression = new QNodeDeserializer(query).Deserialize(descriptor);
             var searchResult = query.Provider.CreateQuery<CustomerDto>(expression);
 
             
             return this.Request.CreateResponse(HttpStatusCode.OK, searchResult);
         }
 
-        [HttpPost]
-        [Route("projection")]
-        public HttpResponseMessage Projection([FromBody] ProjectionRequest request)
-        {
-            var query = this.GetBaseQuery();//.ToList().AsQueryable();
-            //var t = query.Select(x => new { MyCntacts = x.Contacts.Select(p => new { MyId = p.Id }) }).AsQueryable().Expression;
-            var searchExpression = new ExpressionProvider(query).ConvertToExpression(request.SearchDescriptor);
-            //var searchResult = query.Provider.CreateQuery<CustomerDto>(searchExpression).ToList();
-            var searchResult = query.Provider.CreateQuery<CustomerDto>(searchExpression).ToList().AsQueryable();
+        //[HttpPost]
+        //[Route("projection")]
+        //public HttpResponseMessage Projection([FromBody] ProjectionRequest request)
+        //{
+        //    var query = this.GetBaseQuery();//.ToList().AsQueryable();
+        //    //var t = query.Select(x => new { MyCntacts = x.Contacts.Select(p => new { MyId = p.Id }) }).AsQueryable().Expression;
+        //    var searchExpression = new ExpressionProvider(query).ConvertToExpression(request.SearchDescriptor);
+        //    //var searchResult = query.Provider.CreateQuery<CustomerDto>(searchExpression).ToList();
+        //    var searchResult = query.Provider.CreateQuery<CustomerDto>(searchExpression).ToList().AsQueryable();
 
             
 
-            var projectionExpression = new ExpressionProvider(searchResult.AsQueryable()).ConvertToExpression(request.ProjectionDescriptor);
-            var pResult = searchResult.AsQueryable().Provider.CreateQuery(projectionExpression);
+        //    var projectionExpression = new ExpressionProvider(searchResult.AsQueryable()).ConvertToExpression(request.ProjectionDescriptor);
+        //    var pResult = searchResult.AsQueryable().Provider.CreateQuery(projectionExpression);
 
-            var response = this.Request.CreateResponse(HttpStatusCode.OK, pResult);
-            return response;
-        }
+        //    var response = this.Request.CreateResponse(HttpStatusCode.OK, pResult);
+        //    return response;
+        //}
 
         #endregion
     }

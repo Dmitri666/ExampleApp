@@ -2,8 +2,7 @@ using System;
 
 namespace Example.Data.Contract.CrmModel
 {
-    using QData.Common;
-
+    
     public class ContactDto
     {
         public ContactDto()
